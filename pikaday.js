@@ -287,7 +287,10 @@
         onDraw: null,
 
         // Enable keyboard input
-        keyboardInput: true
+        keyboardInput: true,
+
+        // Prevent close on select
+        preventCloseOnSelect: false
     },
 
 
@@ -649,7 +652,7 @@
                 }
             }
             while ((pEl = pEl.parentNode));
-            if (self._v && target !== opts.trigger && pEl !== opts.trigger) {
+            if (!opts.preventCloseOnSelect && self._v && target !== opts.trigger && pEl !== opts.trigger) {
                 self.hide();
             }
         };
@@ -737,7 +740,7 @@
             opts.disableDayFn = (typeof opts.disableDayFn) === 'function' ? opts.disableDayFn : null;
 
             var nom = parseInt(opts.numberOfMonths, 10) || 1;
-            opts.numberOfMonths = nom > 4 ? 4 : nom;
+            opts.numberOfMonths = nom > 13 ? 13 : nom;
 
             if (!isDate(opts.minDate)) {
                 opts.minDate = false;
@@ -1008,11 +1011,13 @@
         setStartRange: function(value)
         {
             this._o.startRange = value;
+            this.draw();
         },
 
         setEndRange: function(value)
         {
             this._o.endRange = value;
+            this.draw();
         },
 
         /**
